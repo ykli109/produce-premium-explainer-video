@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "document_type": "skill_evolution_proposal",
+  "template_only": true,
+  "proposal_id": null,
+  "run_report_reference": null,
+  "classification": null,
+  "candidate_state": "proposed",
+  "problem": {
+    "observed_behavior": null,
+    "expected_user_outcome": null,
+    "evidence": [],
+    "user_feedback": [],
+    "affected_modes_or_stages": [],
+    "severity": null,
+    "repeat_count": null,
+    "root_cause_or_uncertainty": null,
+    "why_reusable_or_why_project_only": null
+  },
+  "authorization": {
+    "permitted_skill_files": [],
+    "instruction_reference": null,
+    "remote_repository": null,
+    "remote_branch": null,
+    "remote_write_scope": null,
+    "allowed_sync_method": null
+  },
+  "baseline": {
+    "version": null,
+    "commit_if_available": null,
+    "affected_file_hashes": [],
+    "snapshot_reference": null,
+    "preexisting_user_changes": []
+  },
+  "candidate": {
+    "isolated_workspace_reference": null,
+    "minimal_diff_reference": null,
+    "changed_files": [],
+    "behavior_change": null,
+    "unchanged_scope": null,
+    "normal_paths_at_risk": [],
+    "expiry_or_revalidation_condition": null
+  },
+  "validation": {
+    "structure": {"status": "not_run", "required": true, "evidence": []},
+    "old_bug_regression": {"status": "not_run", "required": true, "evidence": []},
+    "normal_path_regression": {"status": "not_run", "required": true, "evidence": []},
+    "script_tests": {"status": "not_run", "required": false, "evidence": []},
+    "independent_behavior_trial": {"status": "not_run", "required": true, "evidence": []},
+    "privacy_review": {"status": "not_run", "required": true, "evidence": []}
+  },
+  "apply": {
+    "status": "not_applied",
+    "version_after": null,
+    "changelog_entry": null,
+    "post_apply_verification": {"status": "not_run", "evidence": []}
+  },
+  "rollback": {
+    "status": "not_needed",
+    "reverse_patch_or_snapshot_reference": null,
+    "concurrent_change_check": "not_run",
+    "restored_version": null,
+    "normal_path_recheck": {"status": "not_run", "evidence": []}
+  },
+  "remote_sync": {
+    "status": "not_requested",
+    "verified_remote_version_or_commit": null,
+    "evidence": [],
+    "blocker": null
+  },
+  "result_summary": null
+}

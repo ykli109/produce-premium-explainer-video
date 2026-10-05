@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "document_type": "local_library_handoff",
+  "template_only": true,
+  "project_key": null,
+  "run_id": null,
+  "requested_mode": "local-library-import",
+  "target": {
+    "library_project_locator": null,
+    "executor_environment": null,
+    "connection_checked_at": null,
+    "connection_status": "not_checked",
+    "matching_existing_session": null,
+    "session_project_match_evidence": null,
+    "create_session_if_no_match_authorized": false
+  },
+  "authorization": {
+    "source_of_current_instruction": null,
+    "approved_files_or_manifest": null,
+    "upload_destination": null,
+    "audience_and_access": null,
+    "approved_operations": [],
+    "local_quota_and_environment_constraints": [],
+    "production_on_local_authorized": false,
+    "new_installations_authorized": false,
+    "new_cost_scope": null,
+    "publish_scope": null,
+    "local_retention_or_cleanup_instruction": null
+  },
+  "source_transfer": {
+    "mechanism": null,
+    "file_reference": null,
+    "expires_at": null,
+    "archive_filename": null,
+    "archive_size_bytes": null,
+    "archive_sha256": null,
+    "manifest_reference": null,
+    "note": "云端路径不能当本地路径；运行时安全交接文件来源，不把凭据或签名链接放公共仓库"
+  },
+  "local_project_preflight": {
+    "project_rules_to_read": [],
+    "existing_import_entrypoint": null,
+    "index_structure_reference": null,
+    "working_tree_checked": false,
+    "existing_user_changes": [],
+    "preserve_user_changes": true
+  },
+  "resume": {
+    "previous_receipt_reference": null,
+    "known_remote_items": [],
+    "source_manifest_unchanged": null,
+    "items_requiring_revalidation": []
+  },
+  "required_verification": [
+    "local_bytes_against_source_manifest",
+    "authorized_upload_per_item",
+    "full_remote_readback_size_and_sha256",
+    "index_version_and_attachment_mapping",
+    "detail_text_and_mobile_layout",
+    "non_muted_playback_with_actual_range_recorded"
+  ],
+  "requested_receipt_reference": null,
+  "current_status": "not_started",
+  "blocked_action": null,
+  "blocker": null,
+  "next_safe_action": null
+}

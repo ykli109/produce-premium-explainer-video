@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "run": {
+    "run_id": "synthetic-blank-example",
+    "mode": "full-video",
+    "status": "not_run",
+    "created_at": "2000-01-01T00:00:00+00:00",
+    "started_at": null,
+    "finished_at": null,
+    "scope": "",
+    "synthetic_example": true,
+    "notes": "合成空白示例，不包含私人日志；未运行任何制作、检测、看听、上传、入库或 Skill 演进。时间为固定示例值。实际报告保存在项目工作区，不进入公开 Skill 包。"
+  },
+  "stages": [
+    {
+      "id": "topic",
+      "label": "选题",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "facts",
+      "label": "事实核查",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "script",
+      "label": "脚本与标题",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "storyboard",
+      "label": "视觉方向与连续分镜",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "voice",
+      "label": "配音",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "sample",
+      "label": "有声核心样片",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "production",
+      "label": "全片制作",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "review",
+      "label": "成片验收",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "packaging",
+      "label": "封面与发布素材",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "delivery",
+      "label": "交付入库与发布交接",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "topic_value",
+      "stage": "topic",
+      "description": "问题、受众与长期知识价值",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "fact_sources",
+      "stage": "facts",
+      "description": "事实、来源、日期与适用条件",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "script_logic",
+      "stage": "script",
+      "description": "开头承诺、口语可懂性与因果连续",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "visual_continuity",
+      "stage": "storyboard",
+      "description": "对象状态、空间与镜头连续",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "voice_consistency",
+      "stage": "voice",
+      "description": "声音参考、错读、接缝与一致性",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "audible_sample",
+      "stage": "sample",
+      "description": "真实可播放的有声核心段",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "full_timeline",
+      "stage": "production",
+      "description": "全片时序、同步与连续动作",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "technical_validation",
+      "stage": "review",
+      "description": "技术检测；记录命令、范围与结果",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "actual_watch_listen",
+      "stage": "review",
+      "description": "实际看听；记录人、文件版本与范围",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "publication_assets",
+      "stage": "packaging",
+      "description": "标题、封面、简介与实际内容匹配",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "local_manifest",
+      "stage": "delivery",
+      "description": "本地素材清单与哈希验证",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "upload_readback",
+      "stage": "delivery",
+      "description": "上传后下载回读与原始清单验证",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    {
+      "id": "delivery_access",
+      "stage": "delivery",
+      "description": "目标收件人的实际访问与播放",
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    }
+  ],
+  "issues": [],
+  "learning_candidates": [],
+  "evolution": {
+    "status": "not_run",
+    "candidate_ids": [],
+    "minimal_diff": null,
+    "tests": {
+      "structure": {
+        "required": true,
+        "status": "not_run",
+        "evidence": [],
+        "note": ""
+      },
+      "regression": {
+        "required": true,
+        "status": "not_run",
+        "evidence": [],
+        "note": "",
+        "defect_evidence": [],
+        "normal_path_evidence": []
+      },
+      "behavior": {
+        "required": true,
+        "status": "not_run",
+        "evidence": [],
+        "note": ""
+      }
+    },
+    "writeback": {
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    "version": {
+      "before": null,
+      "after": null,
+      "rollback_ref": null
+    },
+    "remote_sync": {
+      "status": "not_run",
+      "evidence": [],
+      "note": ""
+    },
+    "note": ""
+  },
+  "artifacts": [],
+  "permissions": []
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "document_type": "local_library_receipt",
+  "template_only": true,
+  "project_key": null,
+  "run_id": null,
+  "scope": null,
+  "actual_executor": null,
+  "started_at": null,
+  "last_updated_at": null,
+  "overall_status": "not_started",
+  "source_manifest_reference": null,
+  "file_records": [],
+  "file_record_fields": [
+    "relative_path",
+    "size_bytes",
+    "sha256",
+    "destination_logical_key",
+    "remote_object_reference",
+    "state",
+    "local_verification_evidence",
+    "upload_evidence",
+    "full_readback_evidence",
+    "readback_size_bytes",
+    "readback_sha256",
+    "index_reference",
+    "verification_time"
+  ],
+  "allowed_file_states": [
+    "pending",
+    "transferred",
+    "local_verified",
+    "uploaded",
+    "readback_verified",
+    "indexed",
+    "browser_checked",
+    "blocked",
+    "failed"
+  ],
+  "index_changes": {
+    "status": "not_run",
+    "changed_items": [],
+    "version_or_commit": null,
+    "evidence": []
+  },
+  "browser_checks": {
+    "status": "not_run",
+    "browser_and_device_or_viewport": null,
+    "detail_text": "not_run",
+    "attachments": "not_run",
+    "download": "not_run",
+    "mobile_layout": "not_run",
+    "playback": "not_run",
+    "muted": null,
+    "actual_played_start_seconds": null,
+    "actual_played_end_seconds": null,
+    "full_audiovisual_review_done": false,
+    "evidence": [],
+    "network_access_scope": null
+  },
+  "cleanup": {
+    "instruction": null,
+    "executed": false,
+    "affected_files": []
+  },
+  "remaining_blockers": [],
+  "next_action": null,
+  "privacy_note": "这是空白模板；填入后的真实会话、文件来源、账号和路径仅保存在项目记录，不提交公共Skill"
+}

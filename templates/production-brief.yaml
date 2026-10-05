@@ -1,0 +1,86 @@
+# 复制到本次项目后填写。null 表示未确定，不表示已批准。
+# 此模板保存制作配置，不保存密码、API 密钥、令牌或支付信息。
+project:
+  title: null
+  task_scope: null  # topic / planning / full-video / asset-pack / local-library-import / retrospective-improve
+  requested_substage: null  # 可填写 script / storyboard / voice / preview / revision 等更窄范围
+  current_stage: null
+  audience: 大众
+  language: zh-CN
+  core_question: null
+  viewer_takeaway: null
+  news_event_date: null
+  source_review_date: null
+
+format:
+  platform: null
+  aspect_ratio: "9:16"
+  resolution: null
+  frame_rate: null
+  duration_target_seconds: null
+  duration_hard_limit_seconds: null
+  cover_aspect_ratios: []
+  preview_constraints: null
+
+creative:
+  style: 清晰的连续因果解释
+  must_keep: []
+  must_avoid: []
+  approved_keyframes: []
+  voice_language: 标准普通话
+  voice_direction: 清晰自然的解释型男声
+  approved_voice_reference: null
+  voice_reference_rights: null
+  approved_preview: null
+
+resources:
+  execution_environment: null
+  user_environment_constraints: []
+  available_tools: []
+  selected_tools_and_reasons: []
+  generation_budget: null
+  approved_cost_scope: null
+  source_and_license_register: null
+
+delivery:
+  requested_outputs: []
+  destination: null
+  audience_and_access: null
+  upload_authorization_scope: null
+  publish_authorization_scope: null
+  local_retention_or_cleanup_instruction: null
+  archive_required: true
+  editable_sources_required: true
+  temporary_link_expiry: null
+
+review:
+  decisions_needed: []
+  completed_checks: []
+  unchecked_or_blocked: []
+  next_visible_artifact: null
+  agreed_update_interval: null
+  outcome_goal: null
+  recurring_work_explicitly_requested: false
+
+# 运行时配置由用户的当前或明确持续授权确定；空值不是授权。
+# 填写后的配置和运行日志保留在项目工作区，公开 Skill 仅保留空白模板。
+local_library:
+  project_locator: null
+  preferred_existing_session: null
+  environment_and_quota_constraints: []
+  approved_operations: []
+  handoff_file: null
+  receipt_file: null
+
+evolution:
+  enabled: true
+  authorized_edit_scope: []  # 例如当前 Skill 的正文 参考 模板 测试；不得由模板自行授予
+  working_copy: null
+  report_file: null
+  proposal_file: null
+  baseline_version: null
+  remote_repository: null
+  remote_branch: null
+  remote_write_authorization_scope: null
+  allowed_sync_method: null
+  validation_commands: []
