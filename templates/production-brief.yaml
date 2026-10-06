@@ -33,6 +33,17 @@ creative:
   voice_reference_rights: null
   approved_preview: null
 
+# 文案偏好不覆盖法律、平台、事实或许可要求；不是元数据或水印移除开关。
+viewer_disclosure:
+  proactive_ai_process_notes: false
+  required_ai_label_review_status: not_checked  # verified / pending / not_applicable；后者须有依据
+  required_ai_label_source_and_review_date: null
+  required_ai_label_conditions_and_placement: null
+  factual_boundary_notes: []  # 仅按具体误导风险填写措辞和位置，不逐段强加
+  required_attributions: []
+  preserve_provenance_and_watermarks: true
+  retain_technical_reproduction_details: true
+
 resources:
   execution_environment: null
   user_environment_constraints: []
