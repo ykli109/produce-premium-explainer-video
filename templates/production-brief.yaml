@@ -32,6 +32,11 @@ creative:
   approved_voice_reference: null
   voice_reference_rights: null
   approved_preview: null
+  attention_effects:
+    design_intent: 用少量内容驱动的特效增强精良感与注意力引导
+    planned_moments: []  # 位置/解释目的/效果/绑定对象/触发与持续/层级/读清停留
+    reusable_parameters_reference: null
+    motion_preview_review: not_checked  # 记录实际动态播放范围与证据，静帧不算通过
 
 # 文案偏好不覆盖法律、平台、事实或许可要求；不是元数据或水印移除开关。
 viewer_disclosure:
