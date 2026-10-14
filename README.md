@@ -1,6 +1,6 @@
 # 精品知识科普视频制作 Skill
 
-从选题到视频、可编辑资产包及本地 Codex 素材库入库，并按每轮实际证据检查与改进制作流程。
+从选题到视频、可编辑资产包及本地 Codex 素材库入库，并按每轮实际证据检查与改进制作流程。每条视频默认通过[抖音竖屏质量门槛](references/douyin-quality-standard.md)后才交付。
 
 入口是 [SKILL.md](SKILL.md)。支持六种模式：`topic`、`planning`、`full-video`、`asset-pack`、`local-library-import`、`retrospective-improve`。可只执行一个阶段，也可从已完成的阶段恢复，不必每次重走全流程。
 

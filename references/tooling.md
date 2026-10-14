@@ -1,6 +1,6 @@
 # 确定性辅助工具
 
-这些工具只使用 Python 标准库；用当前环境获准的 Python 运行，不因工具需要而自动安装软件。它们不进行网络请求、上传、发布、本地 Codex 连接或 Skill 自动改写，也不能验证画面美感、事实正确性和实际声音体验。
+这些工具只使用 Python 标准库（`quality_check.py` 另需本机已有的 ffmpeg/ffprobe）；用当前环境获准的 Python 运行，不因工具需要而自动安装软件。它们不进行网络请求、上传、发布、本地 Codex 连接或 Skill 自动改写，也不能验证画面美感、事实正确性和实际声音体验。
 
 从 Skill 根目录执行以下示例。路径都是示例，请替换为本次项目工作区；不要把真实运行报告或私人清单放进公共 Skill 仓库。
 
@@ -61,13 +61,28 @@ python scripts/run_report.py validate \
 
 返回码：0 报告结构有效；2 报告或输入无效。有效报告仍可能如实记录失败、阻断和未执行。
 
+## 成片质量检测
+
+```sh
+python scripts/quality_check.py ./project-output/final.mp4 \
+  --storyboard ./project-output/storyboard.csv \
+  [--bgm-stem ./project-output/bgm.wav] \
+  --output ./project-output/quality-check.json
+```
+
+对照 [质量标准](douyin-quality-standard.md) 测量：分辨率与帧率、首帧亮度和首秒运动、场景检测切点（scdet 阈值 8，360 宽分析）得出的镜头数、平均与最长镜头、可选分镜时间、全片帧差均值、平均饱和度与明暗跨度、积分响度与真峰值（ebur128）、静音窗口比例和响度底噪差（判断是否只有人声）。有 BGM 分轨时检查其非静音。
+
+- 输出 JSON：每项 value、target、hard 与 pass/fail；无法自动判断的项统一为 manual_required，不算通过
+- 返回码：0 自动硬性项全过（仍须人工项）；1 有硬性项失败，阻断交付；2 输入或工具错误
+- 局限：溶解转场可能漏检，快速运动可能误检；音床判断是启发式，不识别是否为音乐；均值不代表每个镜头都合格
+
 ## 测试与 Skill 结构校验
 
 ```sh
 python -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-单测在临时目录中使用合成文件，检查正常清单、内容损坏、缺失、额外文件、路径安全及报告状态。不会操作真实素材库或远端仓库。
+单测在临时目录中使用合成文件（质量检测用 ffmpeg lavfi 生成合成视频，缺 ffmpeg 时跳过），检查正常清单、内容损坏、缺失、额外文件、路径安全及报告状态。不会操作真实素材库或远端仓库。
 
 如果环境提供 skill-creator 的 quick_validate.py，另用它验证此 Skill；不要猜它的位置或声称它包含在本仓库。还需解析 JSON、CSV、YAML并核对相对引用。缺少可用验证器或 YAML 解析依赖时，记录准确阻断，不为检查偷偷安装依赖。
 
