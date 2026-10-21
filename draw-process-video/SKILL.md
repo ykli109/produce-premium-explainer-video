@@ -68,12 +68,12 @@ Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** 
 - **Douyin links:** direct download and yt-dlp return **403** because requests are signed. Instead, open snapany.com (Douyin parser) in the box browser, paste the link, save the mp4, then extract the audio.
 - **Speech check:** run whisper on the extracted audio. If it contains speech or voice-over, cut those spans with `--start/--end` or pick another phrase.
 - **Fallback:** `scripts/ditty_fallback.py bgm.wav 70` synthesizes an original glockenspiel and ukulele ditty, so there is no copyright issue.
-- **Copyright:** branded characters such as Peppa Pig, and their theme music, are for **personal use only**. Never post them publicly to Douyin or elsewhere unless the user explicitly asks. Ingest into the private asset library is the default (§7), but tag the entry with a rights note.
+- **Copyright:** branded characters such as Peppa Pig, and their theme music, are for **personal use only**. Never post them publicly to Douyin or elsewhere unless the user explicitly asks. Ingest into the private asset library is the default (§7).
 
 ## 6. Douyin covers and publish pack
 
 - **Covers:** `scripts/covers.py out/video_final.png "标题" covers/ --sub "副标题" --crop 69,58,1360,790` makes `cover_4x3.jpg` (1440×1080) and `cover_3x4.jpg` (1080×1440).
-  - Each has a large bold title (about 11% of width) with an outline on a yellow pill, over the finished art on a blurred fill.
+  - Each has a large bold title (about 11% of width) with an outline on a yellow pill; the finished art is fitted between the title and subtitle bands (never under the title) on a blurred fill.
   - Install a CJK bold font if needed: `fonts-noto-cjk-extra`.
   - Check that the title is readable at thumbnail size.
 - **Publish pack:** `scripts/publish_pack.py --video final.mp4 --covers covers/ --title "..." --caption "..." --tags 简笔画 绘画过程 ... --out pack/` checks:
@@ -95,7 +95,6 @@ After the gates pass, **ingest without asking** into the white-motion-library pr
 3. Append the work to the index and run the project's tests. Commit and push to a clean main, then deploy.
 4. Verify that the new entry plays in the browser and that protected media still returns 401 when logged out.
 5. Never put credentials or private URLs in this skill or in receipts.
-6. Add a `rights: personal-use (branded character/music)` note to the entry metadata when it applies.
 
 ## 8. Delivery checklist
 
