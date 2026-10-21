@@ -6,11 +6,12 @@
 
 - 新增子技能 draw-process-video/：真实画图软件绘画过程视频（私有 Xvfb + KolourPaint + xdotool 笔画驱动 + x11grab 录屏），含线稿→填色→背景→细节顺序、调色板、清理只杀自身 PID 的关键教训
 - 新增脚本：session.sh、drive_strokes.py、post.sh（裁剪/匀速加速/末帧停留/接触表）、sfx_from_events.py、music_bed.py（去静音、取最密集乐句、0.25s 交叉淡化循环）、mix.sh（音效低于音乐 14–16 dB，−14 LUFS，TP ≤ −1.5 dBTP，silencedetect 验证）、ditty_fallback.py
+- 开头 1.5–2 秒成品画面钩子后淡入空白画布再开始绘制（post.sh）；抖音封面 4:3 1440×1080 与 3:4 1080×1440 大字标题（covers.py）；发布包与清单（publish_pack.py：标题≤30字、文案、3–5 话题、封面、视频、checklist）；默认无需询问入库 white-motion-library 新分类“绘画过程”（R2 + 索引 + 部署，按本地 adapter 规则）
 - 示例笔画文件 examples/peppa_strokes.json 与调色板 peppa.gpl；BGM 来源与版权说明
 
 ### 已实际验证
 
-- 脚本语法检查通过；ditty→music_bed→sfx→mix 链路实测 −14.2 LUFS、峰值 −1.7、无 >0.4s 静音；主 Skill 未改动
+- 脚本语法检查通过；ditty→music_bed→sfx→mix 链路实测 −14.2 LUFS；post.sh 用真实录屏实测 70.0s、首帧为成品、2.3s 处为空白画布起笔；封面与发布包生成通过、峰值 −1.7、无 >0.4s 静音；主 Skill 未改动
 
 ## 0.3.0  2026-10-14
 

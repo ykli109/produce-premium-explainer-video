@@ -3,10 +3,10 @@
 t_video = (t_event - trim) / speed.  usage: sfx_from_events.py events.json out.wav --trim A --speed SP --dur 70"""
 import argparse,json,wave,numpy as np
 ap=argparse.ArgumentParser(); ap.add_argument('events'); ap.add_argument('out')
-ap.add_argument('--trim',type=float,required=True); ap.add_argument('--speed',type=float,required=True); ap.add_argument('--dur',type=float,required=True)
+ap.add_argument('--trim',type=float,required=True); ap.add_argument('--speed',type=float,required=True); ap.add_argument('--dur',type=float,required=True); ap.add_argument('--offset',type=float,default=0,help='hook length before drawing starts')
 a=ap.parse_args(); SR=44100; N=int(SR*a.dur); s=np.zeros(N); rng=np.random.default_rng(7)
 def add(t0,x):
-    i=int(t0*SR)
+    i=int((t0+a.offset)*SR)
     if 0<=i<N: j=min(N,i+len(x)); s[i:j]+=x[:j-i]
 for e in json.load(open(a.events)):
     if e[0]=='s':

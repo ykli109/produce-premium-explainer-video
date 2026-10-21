@@ -1,7 +1,7 @@
 ---
 name: draw-process-video
 description: Produce a "real paint-app drawing process" video — a subject drawn stroke by stroke in a real painting program (KolourPaint) with visible cursor, sped up to ~70 s, with drawing SFX and a dense BGM bed. Use when asked to make a drawing/painting-process clip of a character or scene. Not for 3D explainers (use the parent skill).
-version: 0.1.0
+version: 0.2.0
 ---
 
 # Draw-Process Video (real paint app)
@@ -38,7 +38,12 @@ Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** 
 
 1. `scripts/session.sh strokes.json out/ 1440 1080 77` starts Xvfb, opens a blank canvas, records `raw.mp4` with x11grab at 30 fps, drives the strokes, and writes `events.json` and `end.png`.
 2. Find where app startup ends (the first stroke, about 7 s in) from `events.json` (first `t`) or frames.
-3. `scripts/post.sh out/raw.mp4 out/video.mp4 <TRIM> <TARGET> 4` trims, applies one uniform speed-up so drawing plus hold equals the target, freezes the last frame for ~4 s, and writes `video_contact.jpg` (4×3).
+3. `scripts/post.sh out/raw.mp4 out/video.mp4 <TRIM> <TARGET> 4 1.75` builds the clip in this order:
+   - **Hook (mandatory):** the video opens on the **finished picture** for ~1.5–2 s, then a 0.3 s fade into the **blank canvas**, and the drawing starts.
+   - **Drawing:** startup is trimmed and one uniform speed-up fits hook, drawing and hold into the target exactly.
+   - **Hold:** the last frame is frozen for ~4 s.
+   
+   It also writes `video_final.png` and `video_contact.jpg` (4×3), and prints the `--trim/--speed/--offset` values for the SFX script.
 4. **Contact-sheet QA** (look at it yourself):
    - The subject is recognizable.
    - Proportions are right (head, body and limbs).
@@ -50,7 +55,7 @@ Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** 
 
 ## 4. Audio
 
-- **SFX** from the drawing events: `scripts/sfx_from_events.py events.json sfx.wav --trim A --speed SP --dur T` makes a pencil scratch per stroke and a soft bloop per fill, timed with `t_video=(t-A)/SP`.
+- **SFX** from the drawing events: `scripts/sfx_from_events.py events.json sfx.wav --trim A --speed SP --dur T` makes a pencil scratch per stroke and a soft bloop per fill, timed with `t_video=(t-A)/SP + offset`. Pass `--offset` (hook length minus the crossfade) from the post.sh output.
 - **BGM bed:** `scripts/music_bed.py src bed.wav --dur T` drops silences >0.4 s, keeps the busiest 2 s phrases, joins them with 0.25 s crossfades, loops to length, and fades the last 4 s. Use `--start/--end` to cut intros or spoken parts.
 - **Mix:** `scripts/mix.sh video.mp4 bed.wav sfx.wav final.mp4 15`.
   - SFX get a 6 kHz lowpass and a de-esser and sit **14–16 dB under** the music. Keep them quiet.
@@ -63,10 +68,40 @@ Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** 
 - **Douyin links:** direct download and yt-dlp return **403** because requests are signed. Instead, open snapany.com (Douyin parser) in the box browser, paste the link, save the mp4, then extract the audio.
 - **Speech check:** run whisper on the extracted audio. If it contains speech or voice-over, cut those spans with `--start/--end` or pick another phrase.
 - **Fallback:** `scripts/ditty_fallback.py bgm.wav 70` synthesizes an original glockenspiel and ukulele ditty, so there is no copyright issue.
-- **Copyright:** branded characters such as Peppa Pig, and their theme music, are for **personal use only**. Don't publish them, upload them, or add them to the asset library unless the user explicitly asks.
+- **Copyright:** branded characters such as Peppa Pig, and their theme music, are for **personal use only**. Never post them publicly to Douyin or elsewhere unless the user explicitly asks. Ingest into the private asset library is the default (§7), but tag the entry with a rights note.
 
-## 6. Delivery checklist
+## 6. Douyin covers and publish pack
 
+- **Covers:** `scripts/covers.py out/video_final.png "标题" covers/ --sub "副标题" --crop 69,58,1360,790` makes `cover_4x3.jpg` (1440×1080) and `cover_3x4.jpg` (1080×1440).
+  - Each has a large bold title (about 11% of width) with an outline on a yellow pill, over the finished art on a blurred fill.
+  - Install a CJK bold font if needed: `fonts-noto-cjk-extra`.
+  - Check that the title is readable at thumbnail size.
+- **Publish pack:** `scripts/publish_pack.py --video final.mp4 --covers covers/ --title "..." --caption "..." --tags 简笔画 绘画过程 ... --out pack/` checks:
+  - title ≤ 30 characters
+  - 3–5 hashtags
+  - both covers present
+  - duration 65–75 s
+  
+  It copies the video and covers and writes `publish.json` and `checklist.md`, and exits 1 on any failure. The pack is an asset set only. Posting to Douyin itself still needs the user's explicit go-ahead.
+
+## 7. Asset library (white-motion-library, category 绘画过程)
+
+After the gates pass, **ingest without asking** into the white-motion-library project under a new **drawing-process (`绘画过程`)** category. Follow the parent skill's [local library adapter](../references/local-codex-library-adapter.md) (R2 + index + Worker deploy) and the project's AGENTS.md/README:
+
+1. Add the category to the project index or config if it doesn't exist yet. Keep all existing entries and pinned items.
+2. Upload the final video, both covers, the contact sheet and `publish.json` to R2 with content-addressed keys: `<分区>/<类型>/<sha256>.<ext>`.
+   - Use `wrangler r2 object put <bucket>/<key> --file <f> --remote` for files larger than ~8 MB.
+   - Download every object again and verify its SHA-256.
+3. Append the work to the index and run the project's tests. Commit and push to a clean main, then deploy.
+4. Verify that the new entry plays in the browser and that protected media still returns 401 when logged out.
+5. Never put credentials or private URLs in this skill or in receipts.
+6. Add a `rights: personal-use (branded character/music)` note to the entry metadata when it applies.
+
+## 8. Delivery checklist
+
+- [ ] The video opens on the finished picture (1.5–2 s), then shows a blank canvas and the drawing.
+- [ ] 4:3 and 3:4 covers and the publish pack pass `publish_pack.py`.
+- [ ] Library ingest is done (upload, read-back, index, deploy, playback check).
 - [ ] Resolution and duration match the request (65–75 s, ~4 s hold at the end).
 - [ ] Contact sheet passes QA.
 - [ ] −14 LUFS ±1, TP ≤ −1.5 dBTP, no silence gaps.
@@ -78,6 +113,8 @@ Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** 
 
 - `scripts/session.sh` — private Xvfb, KolourPaint, recording and drive. Cleanup kills its own PIDs only.
 - `scripts/drive_strokes.py` — xdotool driver for the stroke JSON. Writes `events.json`.
-- `scripts/post.sh` — trim, uniform speed-up, hold and contact sheet.
+- `scripts/post.sh` — trim, finished-picture hook, uniform speed-up, hold and contact sheet.
+- `scripts/covers.py` — 4:3 and 3:4 Douyin covers.
+- `scripts/publish_pack.py` — publish pack and checklist.
 - `scripts/sfx_from_events.py`, `scripts/music_bed.py`, `scripts/mix.sh`, `scripts/ditty_fallback.py`
 - `examples/peppa_strokes.json` and `examples/peppa.gpl` — the Peppa-in-a-meadow example, with the `ui` block for 1440×1080.
