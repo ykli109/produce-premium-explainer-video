@@ -1,7 +1,7 @@
 ---
 name: draw-process-video
 description: Produce a "real paint-app drawing process" video — a subject drawn stroke by stroke in a real painting program (KolourPaint) with visible cursor, sped up to ~70 s, with drawing SFX and a dense BGM bed. Use when asked to make a drawing/painting-process clip of a character or scene. Not for 3D explainers (use the parent skill).
-version: 0.2.0
+version: 0.3.0
 ---
 
 # Draw-Process Video (real paint app)
@@ -29,7 +29,9 @@ A real painting app is driven by synthetic mouse input on a private virtual disp
   - Close every outline so bucket fills don't leak. Extend open ends a few px. Stop the hill line short of the character (the gap around x≈344–590 in the example) so it never cuts through the dress.
 - **Custom palette:** one named colour per cell, in the order of `palette` in the JSON. Ship a `.gpl` (`examples/peppa.gpl`) and load it into KolourPaint's colour box. The `ui.palette_origin/cell/cols` values must match where the cells sit on screen.
 - **Calibrate the UI** for the resolution: `CALIBRATE=1 scripts/session.sh strokes.json out/` saves `ui_check.png`. Read off `canvas_origin`, the tool button positions (`brush`, `fill`), the brush-size button and the palette cells.
-- The cursor stays visible because ffmpeg records with `-draw_mouse 1`. Park it off the canvas at the end (`park_cursor`).
+- **Big, obvious cursor (required).** `session.sh` sets `XCURSOR_THEME=DMZ-White XCURSOR_SIZE=64` (install `dmz-cursor-theme x11-xserver-utils`) and records with `-draw_mouse 1`, but KolourPaint's pen/brush cursor stays a tiny crosshair regardless. So `session.sh` also logs the pointer (`mouse.log`, ~50 Hz, plus `t0.txt`), and you burn in a marker before post: `scripts/cursor_overlay.py raw.mp4 mouse.log t0.txt raw_cur.mp4` (coral circle r=24 with white ring and a nib dot), then run `post.sh` on `raw_cur.mp4`. Check 3 mid-drawing frames that the marker is clearly visible. Park the cursor off the canvas at the end (`park_cursor`).
+- **Palette load is automated:** `session.sh` opens Colors → Open… and types the `.gpl` path (`GPL=` env, default `peppa.gpl` next to the JSON). With no window manager, it clicks the filename field first to focus it, otherwise the keystrokes land on the canvas as tool shortcuts.
+- Strokes are clamped 2 px inside the canvas after the wobble: a stroke starting at x=0 was lost off-canvas once, the hill line vanished and the sky fill flooded the grass.
 
 ### ⚠️ Cleanup pitfall (critical)
 Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** (`session.sh` uses a trap). **Never** run `pkill Xvfb`, `killall kolourpaint` or anything similar. The shared desktop also runs on Xvfb, and a broad pkill once took it down. Before starting, check that `/tmp/.X11-unix/X<N>` does not exist.
@@ -38,7 +40,7 @@ Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** 
 
 1. `scripts/session.sh strokes.json out/ 1440 1080 77` starts Xvfb, opens a blank canvas, records `raw.mp4` with x11grab at 30 fps, drives the strokes, and writes `events.json` and `end.png`.
 2. Find where app startup ends (the first stroke, about 7 s in) from `events.json` (first `t`) or frames.
-3. `scripts/post.sh out/raw.mp4 out/video.mp4 <TRIM> <TARGET> 4 1.75` builds the clip in this order:
+3. `TRANS=wipeleft scripts/post.sh out/raw_cur.mp4 out/video.mp4 <TRIM> <TARGET> 4 1.75` builds the clip in this order:
    - **Hook (mandatory):** the video opens on the **finished picture** for ~1.5–2 s, then a 0.3 s fade into the **blank canvas**, and the drawing starts.
    - **Drawing:** startup is trimmed and one uniform speed-up fits hook, drawing and hold into the target exactly.
    - **Hold:** the last frame is frozen for ~4 s.
@@ -113,6 +115,7 @@ After the gates pass, **ingest without asking** into the white-motion-library pr
 
 - `scripts/session.sh` — private Xvfb, KolourPaint, recording and drive. Cleanup kills its own PIDs only.
 - `scripts/drive_strokes.py` — xdotool driver for the stroke JSON. Writes `events.json`.
+- `scripts/cursor_overlay.py` — big coral pen marker synced to `mouse.log`.
 - `scripts/post.sh` — trim, finished-picture hook, uniform speed-up, hold and contact sheet.
 - `scripts/covers.py` — 4:3 and 3:4 Douyin covers.
 - `scripts/publish_pack.py` — publish pack and checklist.

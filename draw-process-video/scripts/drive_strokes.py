@@ -28,6 +28,7 @@ def color(n):
 def stroke(pts,amp=1.0,dl=0.009):
     tool('brush'); pts=resample([M(p) for p in pts]); ph=random.random()*9; dl=dl/a.speed
     pts=[(x+amp*math.sin(k*.21+ph),y+amp*math.cos(k*.17+ph)) for k,(x,y) in enumerate(pts)]  # hand wobble
+    pts=[(min(OX+CW-3,max(OX+2,x)),min(OY+CH-3,max(OY+2,y))) for x,y in pts]  # wobble must not push a stroke off the canvas edge (lost hill line -> sky leaked into grass)
     c=[f'mousemove {int(pts[0][0])} {int(pts[0][1])}','sleep 0.12','mousedown 1']
     for x,y in pts[1:]: c+=[f'mousemove {int(round(x))} {int(round(y))}',f'sleep {dl:.4f}']
     c+=['mouseup 1','sleep 0.12']; t=time.time()-T0; X(c); log.append(['s',t,time.time()-T0])
