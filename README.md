@@ -12,6 +12,10 @@
 - “交给本地 Codex 导入指定素材库，恢复上次未完成的文件”
 - “根据本轮失败和反馈检查 Skill，验证可复用修复后更新”
 
+## 子技能：绘画过程视频
+
+[draw-process-video/](draw-process-video/SKILL.md)：用真实画图软件（KolourPaint）在私有虚拟显示上按笔画 JSON 自动绘制并录屏，生成约 70 秒的“绘画过程”视频，含画笔/填色音效与连续 BGM。独立于主流程，按需加载。
+
 [阶段流程](references/production-stages.md)、[本地入库](references/local-codex-library-adapter.md) 和 [自进化机制](references/self-evolution.md) 按需读取。空白模板在 `templates/`；标准库辅助工具与单测用法见 [工具说明](references/tooling.md)。
 
 公开仓库仅包含通用方法、空白模板、合成测试与代码。真实项目报告、私有素材、账号路径和凭据不属于 Skill 发布内容。工具不自动获取电脑权限、安装软件、上传、发布或改写 Skill；自进化更新必须有证据、授权范围与通过的回归检查。

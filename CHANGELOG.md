@@ -1,5 +1,17 @@
 # 变更记录
 
+## 0.4.0  2026-10-21
+
+### 本次改动
+
+- 新增子技能 draw-process-video/：真实画图软件绘画过程视频（私有 Xvfb + KolourPaint + xdotool 笔画驱动 + x11grab 录屏），含线稿→填色→背景→细节顺序、调色板、清理只杀自身 PID 的关键教训
+- 新增脚本：session.sh、drive_strokes.py、post.sh（裁剪/匀速加速/末帧停留/接触表）、sfx_from_events.py、music_bed.py（去静音、取最密集乐句、0.25s 交叉淡化循环）、mix.sh（音效低于音乐 14–16 dB，−14 LUFS，TP ≤ −1.5 dBTP，silencedetect 验证）、ditty_fallback.py
+- 示例笔画文件 examples/peppa_strokes.json 与调色板 peppa.gpl；BGM 来源与版权说明
+
+### 已实际验证
+
+- 脚本语法检查通过；ditty→music_bed→sfx→mix 链路实测 −14.2 LUFS、峰值 −1.7、无 >0.4s 静音；主 Skill 未改动
+
 ## 0.3.0  2026-10-14
 
 ### 本次改动
