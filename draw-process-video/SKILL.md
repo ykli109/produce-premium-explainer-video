@@ -1,7 +1,7 @@
 ---
 name: draw-process-video
 description: Produce a "real paint-app drawing process" video — a subject drawn stroke by stroke in a real painting program (KolourPaint) with visible cursor, sped up to ~70 s, with drawing SFX and a dense BGM bed. Use when asked to make a drawing/painting-process clip of a character or scene. Not for 3D explainers (use the parent skill).
-version: 0.3.0
+version: 0.4.0
 ---
 
 # Draw-Process Video (real paint app)
@@ -58,7 +58,8 @@ Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** 
 ## 4. Audio
 
 - **SFX** from the drawing events: `scripts/sfx_from_events.py events.json sfx.wav --trim A --speed SP --dur T` makes a pencil scratch per stroke and a soft bloop per fill, timed with `t_video=(t-A)/SP + offset`. Pass `--offset` (hook length minus the crossfade) from the post.sh output.
-- **BGM bed:** `scripts/music_bed.py src bed.wav --dur T` drops silences >0.4 s, keeps the busiest 2 s phrases, joins them with 0.25 s crossfades, loops to length, and fades the last 4 s. Use `--start/--end` to cut intros or spoken parts.
+- **BGM bed:** `scripts/music_bed.py src bed.wav --dur T [--start auto|SEC]` takes ONE contiguous excerpt (default start = first note onset; pick a phrase start), 1.5 s fade-in, 4 s fade-out. If the track is shorter than T it loops the whole piece at a bar line with a 0.3 s crossfade.
+- **No chop-and-stitch (hard rule):** BGM must be one coherent continuous performance. Never cut silences or stitch fragments together; the old silence-chop bed made an analysis video sound messy (乱). Short musical rests inside the performance are fine; the mix's silencedetect still reads 0 gaps because the drawing SFX bridge them.
 - **Mix:** `scripts/mix.sh video.mp4 bed.wav sfx.wav final.mp4 15`.
   - SFX get a 6 kHz lowpass and a de-esser and sit **14–16 dB under** the music. Keep them quiet.
   - Two-pass loudnorm to **−14 LUFS**, plus a limiter, so the AAC file measures **≤ −1.5 dBTP**. Loudnorm alone at TP −1.5 measured −0.8 after encoding.
@@ -68,7 +69,8 @@ Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** 
 
 - **User files:** use them as given (`ffmpeg -i file -vn src.wav`).
 - **Douyin links:** direct download and yt-dlp return **403** because requests are signed. Instead, open snapany.com (Douyin parser) in the box browser, paste the link, save the mp4, then extract the audio.
-- **Autonomous pick (do not ask):** choose the BGM yourself from the candidate pool, currently `/workspace/uploads/douyin_peppa.mp4` and `/workspace/uploads/peppa_bgm_1.mp4` … `peppa_bgm_4.mp4`. Vary tracks across works: check which source the previous library works used and prefer one not used recently. Then run the speech check and the dense-bed build (`music_bed.py`) on the chosen track; if it fails the speech check, move on to the next candidate.
+- **Candidate pool screening (hard rule):** every BGM candidate must be a clean continuous performance. Discard analysis/tutorial, talking and medley videos. Screen each with whisper (trust only segments with low `no_speech_prob` (≈0.0–0.2) that repeat across `language=zh` and `en`; "作曲 李宗盛" / "Thanks for watching!" with high no_speech_prob are hallucinations on music), plus per-5 s key/tempo and an energy-gap scan. Delete failed candidates from the pool. Also md5sum the pool: duplicates under another name share the verdict.
+- **Autonomous pick (do not ask):** choose the BGM yourself from the candidate pool, currently `/workspace/uploads/peppa_clean_1.mp4` (four-hands, screened clean) plus any newly screened files. `peppa_bgm.mp4`/`douyin_peppa.mp4` (harmony-analysis video) and `peppa_clean_2.mp4` (talking over the playing) failed screening. Vary tracks across works: check which source the previous library works used and prefer one not used recently. Then run the speech check and the dense-bed build (`music_bed.py`) on the chosen track; if it fails the speech check, move on to the next candidate.
 - **Speech check:** run whisper on the extracted audio. If it contains speech or voice-over, cut those spans with `--start/--end` or pick another phrase.
 - **Fallback:** `scripts/ditty_fallback.py bgm.wav 70` synthesizes an original glockenspiel and ukulele ditty, so there is no copyright issue.
 - **Copyright:** branded characters such as Peppa Pig, and their theme music, are for **personal use only**. Never post them publicly to Douyin or elsewhere unless the user explicitly asks. Ingest into the private asset library is the default (§7).
