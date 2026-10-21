@@ -15,7 +15,7 @@ A real painting app is driven by synthetic mouse input on a private virtual disp
 | Subject | required. Character or scene. |
 | Aspect / resolution | 4:3 **1440×1080**. Also supports 9:16 1080×1920 (recalibrate the `ui` block). |
 | Target duration | **65–75 s** (70 s typical), including a ~4 s final hold |
-| BGM source | a file the user supplies, a Douyin link the user gives, or the original synthesized ditty (fallback) |
+| BGM source | chosen autonomously from the candidate pool (§5), a file/link the user supplies, or the original synthesized ditty (fallback) |
 
 ## 2. Drawing
 
@@ -66,6 +66,7 @@ Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** 
 
 - **User files:** use them as given (`ffmpeg -i file -vn src.wav`).
 - **Douyin links:** direct download and yt-dlp return **403** because requests are signed. Instead, open snapany.com (Douyin parser) in the box browser, paste the link, save the mp4, then extract the audio.
+- **Autonomous pick (do not ask):** choose the BGM yourself from the candidate pool, currently `/workspace/uploads/douyin_peppa.mp4` and `/workspace/uploads/peppa_bgm_1.mp4` … `peppa_bgm_4.mp4`. Vary tracks across works: check which source the previous library works used and prefer one not used recently. Then run the speech check and the dense-bed build (`music_bed.py`) on the chosen track; if it fails the speech check, move on to the next candidate.
 - **Speech check:** run whisper on the extracted audio. If it contains speech or voice-over, cut those spans with `--start/--end` or pick another phrase.
 - **Fallback:** `scripts/ditty_fallback.py bgm.wav 70` synthesizes an original glockenspiel and ukulele ditty, so there is no copyright issue.
 - **Copyright:** branded characters such as Peppa Pig, and their theme music, are for **personal use only**. Never post them publicly to Douyin or elsewhere unless the user explicitly asks. Ingest into the private asset library is the default (§7).
