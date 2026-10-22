@@ -1,7 +1,7 @@
 ---
 name: draw-process-video
 description: Produce a "real paint-app drawing process" video — a subject drawn stroke by stroke in a real painting program (KolourPaint) with visible cursor, sped up to ~70 s, with drawing SFX and a dense BGM bed. Use when asked to make a drawing/painting-process clip of a character or scene. Not for 3D explainers (use the parent skill).
-version: 0.4.0
+version: 0.5.0
 ---
 
 # Draw-Process Video (real paint app)
@@ -31,6 +31,8 @@ A real painting app is driven by synthetic mouse input on a private virtual disp
 - **Calibrate the UI** for the resolution: `CALIBRATE=1 scripts/session.sh strokes.json out/` saves `ui_check.png`. Read off `canvas_origin`, the tool button positions (`brush`, `fill`), the brush-size button and the palette cells.
 - **Big, obvious cursor (required).** `session.sh` sets `XCURSOR_THEME=DMZ-White XCURSOR_SIZE=64` (install `dmz-cursor-theme x11-xserver-utils`) and records with `-draw_mouse 1`, but KolourPaint's pen/brush cursor stays a tiny crosshair regardless. So `session.sh` also logs the pointer (`mouse.log`, ~50 Hz, plus `t0.txt`), and you burn in a marker before post: `scripts/cursor_overlay.py raw.mp4 mouse.log t0.txt raw_cur.mp4` (coral circle r=24 with white ring and a nib dot), then run `post.sh` on `raw_cur.mp4`. Check 3 mid-drawing frames that the marker is clearly visible. Park the cursor off the canvas at the end (`park_cursor`).
 - **Palette load is automated:** `session.sh` opens Colors → Open… and types the `.gpl` path (`GPL=` env, default `peppa.gpl` next to the JSON). With no window manager, it clicks the filename field first to focus it, otherwise the keystrokes land on the canvas as tool shortcuts.
+- **Seed check before recording:** simulate the JSON with PIL (9 px lines, bucket fills) and nudge each seed to a spot with ≥3 px of white around it; a seed that lands on an outline recolours the whole outline. `examples/peppa_puddle_gen.py` does this (and reuses the Peppa geometry, scaled, for Peppa + George). Tiny closed shapes (shoes at small scale) are drawn as concentric ellipses instead of filled.
+- When re-checking `end.png` or frames after a re-take, copy them to a **new filename** first: an image viewer can show a cached older render of the same path.
 - Strokes are clamped 2 px inside the canvas after the wobble: a stroke starting at x=0 was lost off-canvas once, the hill line vanished and the sky fill flooded the grass.
 
 ### ⚠️ Cleanup pitfall (critical)
@@ -98,8 +100,9 @@ After the gates pass, **ingest without asking** into the white-motion-library pr
    - Use `wrangler r2 object put <bucket>/<key> --file <f> --remote` for files larger than ~8 MB.
    - Download every object again and verify its SHA-256.
 3. Append the work to the index and run the project's tests. Commit and push to a clean main, then deploy.
-4. Verify that the new entry plays in the browser and that protected media still returns 401 when logged out.
-5. Never put credentials or private URLs in this skill or in receipts.
+4. **Deploy safety gate (hard rule, before any deploy):** find the previously deployed commit (`wrangler deployments list`; match the latest deploy time/message to `git log`), then compare against it the work count and the byte size of `工具/白膜云端库/公开目录.json` and `云端登记.json` after your build. Your change should only add (a drawing ingest leaves both at the same count, only the `updated` stamp changes). If either the count or the size shrinks by more than your own change, **STOP, do not deploy, and report**. Dance works must remain present, and `science-chirality` must stay first in `workIds`.
+5. Verify that the new entry plays in the browser and that protected media still returns 401 when logged out.
+6. Never put credentials or private URLs in this skill or in receipts.
 
 ## 8. Delivery checklist
 
@@ -123,3 +126,4 @@ After the gates pass, **ingest without asking** into the white-motion-library pr
 - `scripts/publish_pack.py` — publish pack and checklist.
 - `scripts/sfx_from_events.py`, `scripts/music_bed.py`, `scripts/mix.sh`, `scripts/ditty_fallback.py`
 - `examples/peppa_strokes.json` and `examples/peppa.gpl` — the Peppa-in-a-meadow example, with the `ui` block for 1440×1080.
+- `examples/peppa_puddle_strokes.json`, `examples/peppa2.gpl`, `examples/peppa_puddle_gen.py` — Peppa and George jumping by a muddy puddle, house on the hill (run with `GPL=examples/peppa2.gpl`).
