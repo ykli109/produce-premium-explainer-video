@@ -7,11 +7,11 @@ set -euo pipefail
 IN=$1; OUT=$2; A=$3; TGT=$4; HOLD=${5:-4}; HOOK=${6:-1.75}; XF=0.3
 DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$IN")
 SP=$(python3 -c "print(($DUR-$A)/($TGT-$HOLD-$HOOK+$XF))")
-ffmpeg -y -loglevel error -ss $A -i "$IN" -vf "setpts=PTS/$SP,tpad=stop_mode=clone:stop_duration=$HOLD,fps=30,format=yuv420p" \
+ffmpeg -y -loglevel error -ss $A -i "$IN" -vf "setpts=PTS/$SP,tpad=stop_mode=clone:stop_duration=$HOLD,fps=60,format=yuv420p" \
   -an -c:v libx264 -crf 18 "${OUT%.*}_body.mp4"
 ffmpeg -y -loglevel error -sseof -0.1 -i "${OUT%.*}_body.mp4" -frames:v 1 -update 1 "${OUT%.*}_final.png"
-ffmpeg -y -loglevel error -loop 1 -t $HOOK -framerate 30 -i "${OUT%.*}_final.png" -i "${OUT%.*}_body.mp4" -filter_complex \
- "[0:v]fps=30,format=yuv420p,setsar=1,settb=1/30[h];[1:v]fps=30,format=yuv420p,setsar=1,settb=1/30[b];[h][b]xfade=transition=${TRANS:-fade}:duration=$XF:offset=$(python3 -c "print($HOOK-$XF)"),tpad=stop_mode=clone:stop_duration=15[v]" \
- -map "[v]" -t $TGT -an -c:v libx264 -crf 18 "$OUT"
+ffmpeg -y -loglevel error -loop 1 -t $HOOK -framerate 60 -i "${OUT%.*}_final.png" -i "${OUT%.*}_body.mp4" -filter_complex \
+ "[0:v]fps=60,format=yuv420p,setsar=1,settb=1/60[h];[1:v]fps=60,format=yuv420p,setsar=1,settb=1/60[b];[h][b]xfade=transition=${TRANS:-fade}:duration=$XF:offset=$(python3 -c "print($HOOK-$XF)"),tpad=stop_mode=clone:stop_duration=15[v]" \
+ -map "[v]" -t $TGT -an -c:v libx264 -crf 18 -pix_fmt yuv420p "$OUT"
 ffmpeg -y -loglevel error -i "$OUT" -vf "fps=12/$TGT,scale=480:-1,tile=4x3" -frames:v 1 "${OUT%.*}_contact.jpg"
 echo "trim=$A speed=$SP  -> $OUT  (sfx: --trim $A --speed $SP --offset $(python3 -c "print($HOOK-$XF)"))"

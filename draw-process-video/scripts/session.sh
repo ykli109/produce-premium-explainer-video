@@ -27,10 +27,10 @@ if [ -f "$GPL" ]; then xdotool mousemove 190 9 click 1; sleep 1; xdotool mousemo
 import -window root ui_check.png   # verify toolbox/palette coords vs ui block BEFORE recording
 if [ "${CALIBRATE:-0}" = 1 ]; then echo "calibration shot: $OUT/ui_check.png"; exit 0; fi
 T0=$(date +%s.%N)
-ffmpeg -y -loglevel error -f x11grab -draw_mouse 1 -framerate 30 -video_size ${W}x${H} -i :$DN \
-  -c:v libx264 -preset veryfast -crf 16 -pix_fmt yuv420p raw.mp4 >rec.log 2>&1 & FPID=$!
+ffmpeg -y -loglevel error -f x11grab -draw_mouse 1 -framerate 60 -video_size ${W}x${H} -i :$DN \
+  -c:v libx264 -preset ultrafast -crf 14 -pix_fmt yuv420p raw.mp4 >rec.log 2>&1 & FPID=$!
 # pointer log for cursor_overlay.py (KolourPaint's pen cursor stays tiny even with XCURSOR_SIZE)
-( while :; do echo "$(date +%s.%N) $(xdotool getmouselocation --shell | head -2 | tr '\n' ' ')"; sleep 0.02; done ) >mouse.log & MPID=$!
+( while :; do echo "$(date +%s.%N) $(xdotool getmouselocation --shell | head -2 | tr '\n' ' ')"; sleep 0.008; done ) >mouse.log & MPID=$!
 echo $T0 >t0.txt
 python3 "$HERE/drive_strokes.py" "$JSON" --display :$DN --t0 $T0 --events events.json
 sleep 2; import -window root end.png

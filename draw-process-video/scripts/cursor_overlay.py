@@ -14,12 +14,12 @@ for l in open(a.log):
     if m: T.append(float(m[1])-T0); P.append((int(m[2]),int(m[3])))
 W,H=map(int,subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_entries','stream=width,height','-of','csv=p=0',a.raw]).decode().split(','))
 dec=subprocess.Popen(['ffmpeg','-loglevel','error','-i',a.raw,'-f','rawvideo','-pix_fmt','rgb24','-'],stdout=subprocess.PIPE)
-enc=subprocess.Popen(['ffmpeg','-y','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r','30','-i','-','-c:v','libx264','-preset','veryfast','-crf','16','-pix_fmt','yuv420p',a.out],stdin=subprocess.PIPE)
+enc=subprocess.Popen(['ffmpeg','-y','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r','60','-i','-','-c:v','libx264','-preset','veryfast','-crf','16','-pix_fmt','yuv420p',a.out],stdin=subprocess.PIPE)
 r=a.r; n=0; FS=W*H*3
 while True:
     b=dec.stdout.read(FS)
     if len(b)<FS: break
-    t=n/30-a.lag; n+=1; im=Image.frombuffer('RGB',(W,H),b)
+    t=n/60-a.lag; n+=1; im=Image.frombuffer('RGB',(W,H),b)
     if T and t>=T[0]:
         i=min(len(T)-1,max(0,bisect.bisect_right(T,t)-1)); x,y=P[i]
         if i+1<len(T) and T[i+1]>T[i]:  # interpolate between samples
