@@ -1,0 +1,2 @@
+kf.kio.widgets: Failed to check which JobView API is supported "The name org.kde.kuiserver was not provided by any .service files"
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-box'
