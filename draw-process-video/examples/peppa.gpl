@@ -1,5 +1,5 @@
 GIMP Palette
-Name: Peppa
+Name: Peppa9
 Columns: 6
 #
  40  30  32 ink
@@ -7,16 +7,18 @@ Columns: 6
 247 172 196 skin
 236 120 155 cheek
 255 255 255 white
-120 195  80 grass
- 40  90  35 darkgreen
- 70 160  60 tree
-160 215 245 sky
-255 215  60 sun
-240 170  30 sunray
-140  90  50 trunk
-150 100  60 mud
- 90  55  30 mudline
-120 150 190 cloudline
-255 120 160 flowerpink
-255 240  90 flowery
  25  20  22 shoe
+ 92  70 150 sky
+ 92 150  55 grass
+ 45  95  35 dkgreen
+235 120  30 pumpkin
+180  70  15 pdark
+ 60 120  45 stem
+255 230 140 moon
+255 210  80 glow
+230  90  40 leaf1
+240 180  50 leaf2
+200  50  50 leaf3
+ 35  30  40 bat
+ 90  50 160 bucket
+140  95  55 fence

@@ -1,5 +1,14 @@
 # 变更记录
 
+## 0.6.1  2026-10-29
+
+### draw-process-video
+
+- Cursor overlay is a paintbrush (画笔) tip at the ink point — not a coral circle/dot
+- Fills must use KolourPaint paint-bucket / 着色桶 (`fill{seeds}`), never brush-paint large flats
+- Add Halloween example (drawing-peppa-pig-9): `peppa_halloween_{gen,strokes,bed_user_b}`, `peppa9.gpl`; BGM rotation next = `peppa_user_c`
+- Also park bike example assets (`peppa_bike_*`, `peppa8.gpl`) from drawing-peppa-pig-8
+
 ## 0.4.0  2026-10-21
 
 ### 本次改动
