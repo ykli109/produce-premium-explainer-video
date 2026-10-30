@@ -1,5 +1,13 @@
 # 变更记录
 
+## 0.6.3  2026-10-31
+
+### draw-process-video
+
+- Add snowman example (drawing-peppa-pig-11 佩奇堆雪人): `peppa_snowman_{gen,strokes,bed_user_b}`, `peppa11.gpl`; BGM rotation next = `peppa_user_c`
+- Pitfall: stop the horizon at round objects where it crosses steeply, not near a tangent; fill enclosed objects before the ground/sky seed grids
+- Deploy check without the library password: read the deployed Worker script via the Cloudflare API and look for the new id + video sha256
+
 ## 0.6.1  2026-10-29
 
 ### draw-process-video
