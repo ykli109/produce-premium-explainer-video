@@ -1,5 +1,10 @@
 # 变更记录
 
+## 0.6.4 — 2026-11-04
+
+- examples: `peppa_evie_*` nursery scene for drawing-peppa-pig-16（佩奇和妹妹伊薇）; BGM rotation now next=`peppa_user_b`.
+
+
 ## 0.6.3  2026-10-31
 
 ### draw-process-video
