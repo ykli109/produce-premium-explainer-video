@@ -1,6 +1,6 @@
 ---
 name: draw-process-video
-description: Produce a "real paint-app drawing process" video — a subject drawn stroke by stroke in a real painting program (KolourPaint) with visible cursor, sped up to ~70 s, with drawing SFX and a dense BGM bed. Use when asked to make a drawing/painting-process clip of a character or scene. Not for 3D explainers (use the parent skill).
+description: Produce a "real paint-app drawing process" video — a subject drawn stroke by stroke in a real painting program (KolourPaint) with visible cursor, retimed to ~180 s, with drawing SFX and a dense BGM bed. Use when asked to make a drawing/painting-process clip of a character or scene. Not for 3D explainers (use the parent skill).
 version: 0.6.4
 ---
 
@@ -14,8 +14,14 @@ A real painting app is driven by synthetic mouse input on a private virtual disp
 |---|---|
 | Subject | required. Character or scene. |
 | Aspect / resolution | 4:3 **1440×1080**. Also supports 9:16 1080×1920 (recalibrate the `ui` block). |
-| Target duration | **65–75 s** (70 s typical), including a ~4 s final hold |
+| Target duration | **180 s (3 minutes)**, including the finished-picture hook and ~4 s final hold; technical acceptance 179–181 s |
 | BGM source | chosen autonomously from the candidate pool (§5), a file/link the user supplies, or the original synthesized ditty (fallback) |
+
+### Forward-only duration override (user request, 2026-11-07 Asia/Shanghai)
+
+All subsequent drawing-process works target 180 seconds total, replacing the old 65–75-second default. This includes the existing 1.5–2-second finished-picture hook, transition and ~4-second final hold; use the remaining time for the complete stroke-by-stroke drawing. Do not pad a short drawing with long frozen frames. Do not remake, replace or re-ingest previously delivered works, including drawing-peppa-pig-18.
+
+Use one duration value `T=180` throughout post-processing, SFX, BGM, packaging and delivery metadata. Render from the raw recording/stroke source, not a slowed-down delivered 70-second encode. The 179–181-second range is only an engineering tolerance, not a new creative duration range. Verify final video AND audio durations after mixing, since `mix.sh -shortest` can truncate the work if an old 70-second audio bed is reused. BGM must cover all 180 seconds using the already-approved pool and existing rotation/crossfade rules. Historical `examples/*bed*.py` and their 70-second output are examples, not the new duration default: copy to a new project and extend by looping/crossfading approved sections, then trim/fade to exactly 180 seconds. Changing `N=70*sr` alone is insufficient when source excerpts run out. Do not use the generic ditty fallback for Peppa while the fixed-pool rule applies.
 
 ## 2. Drawing
 
@@ -46,7 +52,7 @@ Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** 
 
 1. `scripts/session.sh strokes.json out/ 1440 1080 77` starts Xvfb, opens a blank canvas, records `raw.mp4` with x11grab at **native 60 fps** (`-framerate 60`, ultrafast crf 14; pointer logged every ~8 ms), drives the strokes, and writes `events.json` and `end.png`. `cursor_overlay.py` and `post.sh` keep 60 fps end to end; the speed-up only drops captured frames (no interpolation). Verify `ffprobe` r_frame_rate = avg_frame_rate = 60/1, 1440×1080, `pix_fmt=yuv420p` (post.sh forces it; without `-pix_fmt` the xfade output came out yuv444p / High 4:4:4, which many players reject).
 2. Find where app startup ends (the first stroke, about 7 s in) from `events.json` (first `t`) or frames.
-3. `TRANS=wipeleft scripts/post.sh out/raw_cur.mp4 out/video.mp4 <TRIM> <TARGET> 4 1.75` builds the clip in this order:
+3. `TRANS=wipeleft scripts/post.sh out/raw_cur.mp4 out/video.mp4 <TRIM> 180 4 1.75` builds the clip in this order:
    - **Hook (mandatory):** the video opens on the **finished picture** for ~1.5–2 s, then a 0.3 s fade into the **blank canvas**, and the drawing starts.
    - **Drawing:** startup is trimmed and one uniform speed-up fits hook, drawing and hold into the target exactly.
    - **Hold:** the last frame is frozen for ~4 s.
@@ -94,7 +100,7 @@ Record your own `Xvfb`, `kolourpaint` and `ffmpeg` PIDs and kill **only those** 
   - title ≤ 30 characters
   - 3–5 hashtags
   - both covers present
-  - duration 65–75 s
+  - duration 179–181 s (target 180 s)
   
   It copies the video and covers and writes `publish.json` and `checklist.md`, and exits 1 on any failure. The box has no `zip` binary: build the creator ZIP with Python `zipfile`. The pack is an asset set only. Posting to Douyin itself still needs the user's explicit go-ahead.
 
@@ -118,7 +124,7 @@ After the gates pass, **ingest without asking** into the white-motion-library pr
 - [ ] The video opens on the finished picture (1.5–2 s), then shows a blank canvas and the drawing.
 - [ ] 4:3 and 3:4 covers and the publish pack pass `publish_pack.py`.
 - [ ] Library ingest is done (upload, read-back, index, deploy, playback check).
-- [ ] Resolution and duration match the request (65–75 s, ~4 s hold at the end).
+- [ ] Resolution and duration match the request (target 180 s; technical acceptance 179–181 s; ~4 s hold at the end).
 - [ ] Contact sheet passes QA.
 - [ ] −14 LUFS ±1, TP ≤ −1.5 dBTP, no silence gaps.
 - [ ] SFX are audible but soft.

@@ -10,7 +10,7 @@ if len(a.title)>30: err.append(f'title {len(a.title)} chars >30')
 if not 3<=len(a.tags)<=5: err.append(f'{len(a.tags)} hashtags (need 3-5)')
 cv=[f'{a.covers}/cover_4x3.jpg',f'{a.covers}/cover_3x4.jpg']; err+=[f'missing {c}' for c in cv if not os.path.exists(c)]
 dur=float(subprocess.run(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',a.video],capture_output=True,text=True).stdout)
-if not 65<=dur<=75: err.append(f'duration {dur:.1f}s outside 65-75 (ok only if user asked)')
+if not 179<=dur<=181: err.append(f'duration {dur:.1f}s outside 179-181 (target 180s)')
 os.makedirs(a.out,exist_ok=True)
 for f in [a.video]+cv: shutil.copy(f,a.out)
 tags=['#'+t.lstrip('#') for t in a.tags]
@@ -20,7 +20,7 @@ ck=f"""# 抖音发布清单
 - [x] 文案：{a.caption}
 - [{'x' if 3<=len(tags)<=5 else ' '}] 话题（3–5 个）：{' '.join(tags)}
 - [x] 封面 4:3 cover_4x3.jpg / 3:4 cover_3x4.jpg
-- [x] 视频 {os.path.basename(a.video)}（{dur:.1f}s）
+- [{'x' if 179<=dur<=181 else ' '}] 视频 {os.path.basename(a.video)}（{dur:.1f}s；目标180s）
 - [ ] 人工：开头 1.5–2s 成品钩子、接触表 QA、−14 LUFS / TP≤−1.5、无工具/AI 字样
 """
 open(f'{a.out}/checklist.md','w').write(ck); print(ck)
